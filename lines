@@ -1,0 +1,36 @@
+t = 0;
+max_fps = 30;
+x_inc = 0;
+y_inc = 0;
+
+function setup() {
+	createCanvas(windowWidth, windowHeight);
+	frameRate(30);
+	background(100);
+}
+
+function draw() {
+  background(0);
+  stroke(255);
+  
+  dx = 5;
+  dy = 10;
+  wave_height = 200;
+  speed = 0.1;
+  
+  if (mouseIsPressed) {
+    x_inc += -pow(2*(mouseX / windowWidth - 0.5), 5);
+    y_inc += -pow(2*(mouseY / windowHeight - 0.5), 5);
+  }
+  
+  for(y = dy; y < height; y += dy) {
+    last_y = y;
+    for(x = 0; x < width; x += dx) {
+      next_y = y + floor(wave_height*noise(0.005 * x + x_inc, 0.005 * y + y_inc, speed * t / max_fps) - wave_height/2);
+      line(x, last_y, x + dx, next_y);
+      last_y = next_y;
+    }
+  }
+  
+  t += 1.0;
+}
